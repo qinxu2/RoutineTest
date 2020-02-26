@@ -1,0 +1,691 @@
+在USB的枚举章节，主机获取的最后一个描述符时报表描述符。
+
+因为当时没学习HID类的报表描述符，所以当时没分析，这边刚学完HID的报表描述符，趁热打铁，学习一下。
+
+首先报表描述符的长度是，在获取HID描述符长度的时候获取的。
+
+所以才能在获取报表描述符时使用准确的获取长度。
+
+
+
+ 
+
+05 01 09 02 A1 01 09 01 A1 00 05 09 19 01 29 03 15 00 25 01 75 01 95 03 81 02 75 05 95 01 81 01 
+
+05 01 09 30 09 31 09 38 15 81 25 7F 75 08 95 03 81 06 C0 C0
+
+总共52字节的长度分别如上所示：
+
+分析时首先是建议查看上面表格，慢慢分析。
+
+
+
+首先分析05属于Global类项目的Usage Page项，带一个数据位Usage ID。数据值为01，查看Global章节可知01表示(Generic Desktop Control)通用桌面控件。（如下）
+
+
+
+05 01 09 02 A1 01 09 01 A1 00 05 09 19 01 29 03 15 00 25 01 75 01 95 03 81 02 75 05 95 01 81 01 
+
+05 01 09 30 09 31 09 38 15 81 25 7F 75 08 95 03 81 06 C0 C0
+
+Usage Page (Generic Desktop Control)	                05 01 
+ 
+
+接下来分析09属于Local类项的Usage，带一个参数，02。查看Local章节可知02代表具体通用桌面控件中的鼠标
+
+
+
+05 01 09 02 A1 01 09 01 A1 00 05 09 19 01 29 03 15 00 25 01 75 01 95 03 81 02 75 05 95 01 81 01 
+
+05 01 09 30 09 31 09 38 15 81 25 7F 75 08 95 03 81 06 C0 C0
+
+Usage Page (Generic Desktop Control)	                05 01 
+Usage (Mouse)					                                09 02 
+ 
+
+ 
+
+接下来分析A1，属于Main类项的Collection ，带1个数据。01参数代表开一个集合。
+
+
+
+05 01 09 02 A1 01 09 01 A1 00 05 09 19 01 29 03 15 00 25 01 75 01 95 03 81 02 75 05 95 01 81 01 
+
+05 01 09 30 09 31 09 38 15 81 25 7F 75 08 95 03 81 06 C0 C0
+
+Usage Page (Generic Desktop Control)	                05 01 
+Usage (Mouse)					                                09 02 
+Collection (Application)				                      A1 01 
+ 
+
+接下来分析09属于Local类项的Usage，带一个参数，01。查看Local章节可知01代表具体通用桌面控件中的指针。
+
+
+
+05 01 09 02 A1 01 09 01 A1 00 05 09 19 01 29 03 15 00 25 01 75 01 95 03 81 02 75 05 95 01 81 01 
+
+05 01 09 30 09 31 09 38 15 81 25 7F 75 08 95 03 81 06 C0 C0
+
+Usage Page (Generic Desktop Control)	                05 01 
+Usage (Mouse)					                                09 02 
+Collection (Application)				                      A1 01 
+Usage (Pointer)					                              09 01 
+ 
+
+分析到这里我们暂停一下，从前面四个我们可以知道。
+
+最开始的是大类，通用桌面控制。
+接下来是通用桌面控制下的一个设备，我们这里是鼠标。
+接下来要详细描述鼠标了，所以开一个集合，下面全是鼠标中的描述。
+接下来指出了鼠标中的指针集合。
+可以看到，整个报表描述符都是按照从大到小的集合来描述的。
+
+ 
+
+ 
+
+接下来分析A1，属于Main类项的Collection ，带1个数据。0参数代物理（轴组）。
+
+
+
+ 
+
+05 01 09 02 A1 01 09 01 A1 00 05 09 19 01 29 03 15 00 25 01 75 01 95 03 81 02 75 05 95 01 81 01 
+
+05 01 09 30 09 31 09 38 15 81 25 7F 75 08 95 03 81 06 C0 C0
+
+Usage Page (Generic Desktop Control)	                05 01 
+Usage (Mouse)					                                09 02 
+Collection (Application)				                      A1 01 
+  Usage (Pointer)					                            09 01 
+  Collection (Physical)				                        A1 00 
+ 
+
+ 
+
+ 
+
+ 
+
+05属于Global类项目的Usage Page项，带一个数据位Usage ID。数据值为09代表按键。
+
+
+
+05 01 09 02 A1 01 09 01 A1 00 05 09 19 01 29 03 15 00 25 01 75 01 95 03 81 02 75 05 95 01 81 01 
+
+05 01 09 30 09 31 09 38 15 81 25 7F 75 08 95 03 81 06 C0 C0
+
+Usage Page (Generic Desktop Control)	                05 01 
+Usage (Mouse)					                                09 02 
+Collection (Application)				                      A1 01 
+  Usage (Pointer)					                            09 01 
+  Collection (Physical)				                        A1 00 
+    Usage Page (Button)				                        05 09 
+ 
+
+19属于Local类项目的Usage Minimum项，带一个数据。数据值为1代表控制操作的第一个用法。
+
+05 01 09 02 A1 01 09 01 A1 00 05 09 19 01 29 03 15 00 25 01 75 01 95 03 81 02 75 05 95 01 81 01 
+
+05 01 09 30 09 31 09 38 15 81 25 7F 75 08 95 03 81 06 C0 C0
+
+Usage Page (Generic Desktop Control)	                05 01 
+Usage (Mouse)					                                09 02 
+Collection (Application)				                      A1 01 
+Usage (Pointer)					                              09 01 
+Collection (Physical)			                   	        A1 00 
+Usage Page (Button)				                            05 09 
+Usage Minimum (1)				                              19 01 
+ 
+
+29属于Local类项目的Usage Maximum项，带一个数据。数据值为3代表控制操作的最后一个用法。
+
+05 01 09 02 A1 01 09 01 A1 00 05 09 19 01 29 03 15 00 25 01 75 01 95 03 81 02 75 05 95 01 81 01 
+
+05 01 09 30 09 31 09 38 15 81 25 7F 75 08 95 03 81 06 C0 C0
+
+Usage Page (Generic Desktop Control)	                05 01 
+Usage (Mouse)					                                09 02 
+Collection (Application)			                   	    A1 01 
+Usage (Pointer)					                              09 01 
+Collection (Physical)				                          A1 00 
+Usage Page (Button)				                            05 09 
+Usage Minimum (1)				                              19 01 
+Usage Maximum (3)				                              29 03 
+ 
+
+15属于Global类项的Logical Minimum项，带一个参数。数据0代表逻辑最小值为0。
+
+05 01 09 02 A1 01 09 01 A1 00 05 09 19 01 29 03 15 00 25 01 75 01 95 03 81 02 75 05 95 01 81 01 
+
+05 01 09 30 09 31 09 38 15 81 25 7F 75 08 95 03 81 06 C0 C0
+
+Usage Page (Generic Desktop Control)	                05 01 
+Usage (Mouse)					                                09 02 
+Collection (Application)				                      A1 01 
+Usage (Pointer)					                              09 01 
+Collection (Physical)				                          A1 00 
+Usage Page (Button)				                            05 09 
+Usage Minimum (1)				                              19 01 
+Usage Maximum (3)				                              29 03 
+Logical Minimum (0)				                            15 00 
+ 
+
+25属于Global类项的Logical Maximum项，带一个参数。数据1代表逻辑最大值为1。
+
+05 01 09 02 A1 01 09 01 A1 00 05 09 19 01 29 03 15 00 25 01 75 01 95 03 81 02 75 05 95 01 81 01 
+
+05 01 09 30 09 31 09 38 15 81 25 7F 75 08 95 03 81 06 C0 C0
+
+Usage Page (Generic Desktop Control)	                05 01 
+Usage (Mouse)					        09 02 
+Collection (Application)				A1 01 
+  Usage (Pointer)					09 01 
+  Collection (Physical)				        A1 00 
+    Usage Page (Button)				        05 09 
+    Usage Minimum (1)				        19 01 
+    Usage Maximum (3)				        29 03 
+    Logical Minimum (0)				        15 00 
+    Logical Maximum (1)				        25 01 
+ 
+
+75属于Global类的Report Size项，带一个参数。1代表（Button功能的）报表数据区域占1位。
+
+05 01 09 02 A1 01 09 01 A1 00 05 09 19 01 29 03 15 00 25 01 75 01 95 03 81 02 75 05 95 01 81 01 
+
+05 01 09 30 09 31 09 38 15 81 25 7F 75 08 95 03 81 06 C0 C0
+
+Usage Page (Generic Desktop Control)	                05 01 
+Usage (Mouse)					        09 02 
+Collection (Application)				A1 01 
+  Usage (Pointer)					09 01 
+  Collection (Physical)				        A1 00 
+    Usage Page (Button)				        05 09 
+    Usage Minimum (1)				        19 01 
+    Usage Maximum (3)				        29 03 
+    Logical Minimum (0)				        15 00 
+    Logical Maximum (1)				        25 01 
+    Report Size (1)					75 01 
+ 
+
+ 
+
+95属于Global类的Report Count项，带一个参数。参数03表明数据域有3个。
+
+05 01 09 02 A1 01 09 01 A1 00 05 09 19 01 29 03 15 00 25 01 75 01 95 03 81 02 75 05 95 01 81 01 
+
+05 01 09 30 09 31 09 38 15 81 25 7F 75 08 95 03 81 06 C0 C0
+
+Usage Page (Generic Desktop Control)	                05 01 
+Usage (Mouse)					        09 02 
+Collection (Application)				A1 01 
+  Usage (Pointer)					09 01 
+  Collection (Physical)				        A1 00 
+    Usage Page (Button)				        05 09 
+    Usage Minimum (1)				        19 01 
+    Usage Maximum (3)				        29 03 
+    Logical Minimum (0)				        15 00 
+    Logical Maximum (1)				        25 01 
+    Report Size (1)					75 01 
+    Report Count (3)					95 03 
+这最近的6项，结合起来表明按键功能。有三个按键（左，右和滚轮），每个键逻辑上只有按下和松开两种逻辑。每个按键占一个bit，总共占三个bit。
+
+ 
+
+81属于Main类的Input报表，带一个参数。参数02表示输入报表输入的是一个可变的参数。
+
+
+
+05 01 09 02 A1 01 09 01 A1 00 05 09 19 01 29 03 15 00 25 01 75 01 95 03 81 02 75 05 95 01 81 01 
+
+05 01 09 30 09 31 09 38 15 81 25 7F 75 08 95 03 81 06 C0 C0
+
+Usage Page (Generic Desktop Control)	                05 01 
+Usage (Mouse)					        09 02 
+Collection (Application)				A1 01 
+  Usage (Pointer)					09 01 
+  Collection (Physical)				        A1 00 
+    Usage Page (Button)				        05 09 
+    Usage Minimum (1)				        19 01 
+    Usage Maximum (3)				        29 03 
+    Logical Minimum (0)				        15 00 
+    Logical Maximum (1)				        25 01 
+    Report Size (1)					75 01 
+    Report Count (3)					95 03 
+    Input (Data, Variable, Absolute)                    81 02 
+ 
+
+ 
+
+75属于Global类的Report Size项，带一个参数。05代表数据区域占5位。
+
+05 01 09 02 A1 01 09 01 A1 00 05 09 19 01 29 03 15 00 25 01 75 01 95 03 81 02 75 05 95 01 81 01 
+
+05 01 09 30 09 31 09 38 15 81 25 7F 75 08 95 03 81 06 C0 C0
+
+Usage Page (Generic Desktop Control)	                05 01 
+Usage (Mouse)					        09 02 
+Collection (Application)				A1 01 
+  Usage (Pointer)					09 01 
+  Collection (Physical)				        A1 00 
+    Usage Page (Button)				        05 09 
+    Usage Minimum (1)				        19 01 
+    Usage Maximum (3)				        29 03 
+    Logical Minimum (0)				        15 00 
+    Logical Maximum (1)				        25 01 
+    Report Size (1)					75 01 
+    Report Count (3)					95 03 
+    Input (Data, Variable, Absolute)                    81 02 
+    Report Size (5)					75 05 
+ 
+
+ 
+
+95属于Global类的Report Count项，带一个参数。参数01表明数据域有1个。
+
+05 01 09 02 A1 01 09 01 A1 00 05 09 19 01 29 03 15 00 25 01 75 01 95 03 81 02 75 05 95 01 81 01 
+
+05 01 09 30 09 31 09 38 15 81 25 7F 75 08 95 03 81 06 C0 C0
+
+Usage Page (Generic Desktop Control)	                05 01 
+Usage (Mouse)					        09 02 
+Collection (Application)				A1 01 
+  Usage (Pointer)					09 01 
+  Collection (Physical)				        A1 00 
+    Usage Page (Button)				        05 09 
+    Usage Minimum (1)				        19 01 
+    Usage Maximum (3)				        29 03 
+    Logical Minimum (0)				        15 00 
+    Logical Maximum (1)				        25 01 
+    Report Size (1)					75 01 
+    Report Count (3)					95 03 
+    Input (Data, Variable, Absolute)                    81 02 
+    Report Size (5)					75 05 
+    Report Count (1)					95 01 
+ 
+
+81属于Main类项Input项，带一个参数。01表示输入的参数类型是固定值。
+
+
+
+05 01 09 02 A1 01 09 01 A1 00 05 09 19 01 29 03 15 00 25 01 75 01 95 03 81 02 75 05 95 01 81 01 
+
+05 01 09 30 09 31 09 38 15 81 25 7F 75 08 95 03 81 06 C0 C0
+
+Usage Page (Generic Desktop Control)	                05 01 
+Usage (Mouse)					        09 02 
+Collection (Application)				A1 01 
+  Usage (Pointer)					09 01 
+  Collection (Physical)				        A1 00 
+    Usage Page (Button)				        05 09 
+    Usage Minimum (1)				        19 01 
+    Usage Maximum (3)				        29 03 
+    Logical Minimum (0)				        15 00 
+    Logical Maximum (1)				        25 01 
+    Report Size (1)					75 01 
+    Report Count (3)					95 03 
+    Input (Data, Variable, Absolute)                    81 02 
+    Report Size (5)					75 05 
+    Report Count (1)					95 01 
+    Input (Constant)					81 01 
+ 
+
+ 
+
+05属于Global类的Usage Page项，带一个参数。01表示这个功能是通用桌面控件。
+
+
+
+05 01 09 02 A1 01 09 01 A1 00 05 09 19 01 29 03 15 00 25 01 75 01 95 03 81 02 75 05 95 01 81 01 
+
+05 01 09 30 09 31 09 38 15 81 25 7F 75 08 95 03 81 06 C0 C0
+
+Usage Page (Generic Desktop Control)	                05 01 
+Usage (Mouse)					        09 02 
+Collection (Application)				A1 01 
+  Usage (Pointer)					09 01 
+  Collection (Physical)				        A1 00 
+    Usage Page (Button)				        05 09 
+    Usage Minimum (1)				        19 01 
+    Usage Maximum (3)				        29 03 
+    Logical Minimum (0)				        15 00 
+    Logical Maximum (1)				        25 01 
+    Report Size (1)					75 01 
+    Report Count (3)					95 03 
+    Input (Data, Variable, Absolute)                    81 02 
+    Report Size (5)					75 05 
+    Report Count (1)					95 01 
+    Input (Constant)					81 01 
+    Usage Page (Generic Desktop Control)                05 01 
+ 
+
+ 
+
+ 
+
+09属于Local类的Usage项，带一个参数。0x30表示X坐标。
+
+
+
+
+
+05 01 09 02 A1 01 09 01 A1 00 05 09 19 01 29 03 15 00 25 01 75 01 95 03 81 02 75 05 95 01 81 01 
+
+05 01 09 30 09 31 09 38 15 81 25 7F 75 08 95 03 81 06 C0 C0
+
+Usage Page (Generic Desktop Control)	                05 01 
+Usage (Mouse)					        09 02 
+Collection (Application)				A1 01 
+  Usage (Pointer)					09 01 
+  Collection (Physical)				        A1 00 
+    Usage Page (Button)				        05 09 
+    Usage Minimum (1)				        19 01 
+    Usage Maximum (3)				        29 03 
+    Logical Minimum (0)				        15 00 
+    Logical Maximum (1)				        25 01 
+    Report Size (1)					75 01 
+    Report Count (3)					95 03 
+    Input (Data, Variable, Absolute)                    81 02 
+    Report Size (5)					75 05 
+    Report Count (1)					95 01 
+    Input (Constant)					81 01 
+    Usage Page (Generic Desktop Control)                05 01 
+    Usage (X)					        09 30 
+ 
+
+09属于Local类的Usage项，带一个参数。0x31表示Y坐标。
+
+05 01 09 02 A1 01 09 01 A1 00 05 09 19 01 29 03 15 00 25 01 75 01 95 03 81 02 75 05 95 01 81 01 
+
+05 01 09 30 09 31 09 38 15 81 25 7F 75 08 95 03 81 06 C0 C0
+
+Usage Page (Generic Desktop Control)	                05 01 
+Usage (Mouse)					        09 02 
+Collection (Application)				A1 01 
+  Usage (Pointer)					09 01 
+  Collection (Physical)				        A1 00 
+    Usage Page (Button)				        05 09 
+    Usage Minimum (1)				        19 01 
+    Usage Maximum (3)				        29 03 
+    Logical Minimum (0)				        15 00 
+    Logical Maximum (1)				        25 01 
+    Report Size (1)					75 01 
+    Report Count (3)					95 03 
+    Input (Data, Variable, Absolute)                    81 02 
+    Report Size (5)					75 05 
+    Report Count (1)					95 01 
+    Input (Constant)					81 01 
+    Usage Page (Generic Desktop Control)                05 01 
+    Usage (X)					        09 30 
+    Usage (Y)					        09 31 
+ 
+
+ 
+
+09属于Local类的Usage项，带一个参数。0x38表示滚轮。
+
+
+
+
+
+05 01 09 02 A1 01 09 01 A1 00 05 09 19 01 29 03 15 00 25 01 75 01 95 03 81 02 75 05 95 01 81 01 
+
+05 01 09 30 09 31 09 38 15 81 25 7F 75 08 95 03 81 06 C0 C0
+
+Usage Page (Generic Desktop Control)	                05 01 
+Usage (Mouse)					        09 02 
+Collection (Application)				A1 01 
+  Usage (Pointer)					09 01 
+  Collection (Physical)				        A1 00 
+    Usage Page (Button)				        05 09 
+    Usage Minimum (1)				        19 01 
+    Usage Maximum (3)				        29 03 
+    Logical Minimum (0)				        15 00 
+    Logical Maximum (1)				        25 01 
+    Report Size (1)					75 01 
+    Report Count (3)					95 03 
+    Input (Data, Variable, Absolute)                    81 02 
+    Report Size (5)					75 05 
+    Report Count (1)					95 01 
+    Input (Constant)					81 01 
+    Usage Page (Generic Desktop Control)                05 01 
+    Usage (X)					        09 30 
+    Usage (Y)					        09 31 
+    Usage (Wheel)					09 38 
+ 
+
+ 
+
+15属于Global类项的Logical Minimum项，带一个参数。数据81代表逻辑最小值为-127。
+
+05 01 09 02 A1 01 09 01 A1 00 05 09 19 01 29 03 15 00 25 01 75 01 95 03 81 02 75 05 95 01 81 01 
+
+05 01 09 30 09 31 09 38 15 81 25 7F 75 08 95 03 81 06 C0 C0
+
+Usage Page (Generic Desktop Control)	                05 01 
+Usage (Mouse)					        09 02 
+Collection (Application)				A1 01 
+  Usage (Pointer)					09 01 
+  Collection (Physical)				        A1 00 
+    Usage Page (Button)				        05 09 
+    Usage Minimum (1)				        19 01 
+    Usage Maximum (3)				        29 03 
+    Logical Minimum (0)				        15 00 
+    Logical Maximum (1)				        25 01 
+    Report Size (1)					75 01 
+    Report Count (3)					95 03 
+    Input (Data, Variable, Absolute)                    81 02 
+    Report Size (5)					75 05 
+    Report Count (1)					95 01 
+    Input (Constant)					81 01 
+    Usage Page (Generic Desktop Control)                05 01 
+    Usage (X)					        09 30 
+    Usage (Y)					        09 31 
+    Usage (Wheel)					09 38 
+    Logical Minimum (-127)				15 81 
+ 
+
+25属于Global类项的Logical Maximum项，带一个参数。数据7F代表逻辑最大值为127。
+
+05 01 09 02 A1 01 09 01 A1 00 05 09 19 01 29 03 15 00 25 01 75 01 95 03 81 02 75 05 95 01 81 01 
+
+05 01 09 30 09 31 09 38 15 81 25 7F 75 08 95 03 81 06 C0 C0
+
+Usage Page (Generic Desktop Control)	                05 01 
+Usage (Mouse)					        09 02 
+Collection (Application)				A1 01 
+  Usage (Pointer)					09 01 
+  Collection (Physical)				        A1 00 
+    Usage Page (Button)				        05 09 
+    Usage Minimum (1)				        19 01 
+    Usage Maximum (3)				        29 03 
+    Logical Minimum (0)				        15 00 
+    Logical Maximum (1)				        25 01 
+    Report Size (1)					75 01 
+    Report Count (3)					95 03 
+    Input (Data, Variable, Absolute)                    81 02 
+    Report Size (5)					75 05 
+    Report Count (1)					95 01 
+    Input (Constant)					81 01 
+    Usage Page (Generic Desktop Control)                05 01 
+    Usage (X)					        09 30 
+    Usage (Y)					        09 31 
+    Usage (Wheel)					09 38 
+    Logical Minimum (-127)				15 81 
+    Logical Maximum (127)				25 7F 
+ 
+
+75属于Global类的Report size项，带一个参数。参数8表示，一个报表数据所占8位。
+
+05 01 09 02 A1 01 09 01 A1 00 05 09 19 01 29 03 15 00 25 01 75 01 95 03 81 02 75 05 95 01 81 01 
+
+05 01 09 30 09 31 09 38 15 81 25 7F 75 08 95 03 81 06 C0 C0
+
+Usage Page (Generic Desktop Control)	                05 01 
+Usage (Mouse)					        09 02 
+Collection (Application)				A1 01 
+  Usage (Pointer)					09 01 
+  Collection (Physical)				        A1 00 
+    Usage Page (Button)				        05 09 
+    Usage Minimum (1)				        19 01 
+    Usage Maximum (3)				        29 03 
+    Logical Minimum (0)				        15 00 
+    Logical Maximum (1)				        25 01 
+    Report Size (1)					75 01 
+    Report Count (3)					95 03 
+    Input (Data, Variable, Absolute)                    81 02 
+    Report Size (5)					75 05 
+    Report Count (1)					95 01 
+    Input (Constant)					81 01 
+    Usage Page (Generic Desktop Control)                05 01 
+    Usage (X)					        09 30 
+    Usage (Y)					        09 31 
+    Usage (Wheel)					09 38 
+    Logical Minimum (-127)				15 81 
+    Logical Maximum (127)				25 7F 
+    Report Size (8)					75 08 
+ 
+
+95属于Global类的Report Count，带一个参数。参数3表示有三个数据报表。
+
+05 01 09 02 A1 01 09 01 A1 00 05 09 19 01 29 03 15 00 25 01 75 01 95 03 81 02 75 05 95 01 81 01 
+
+05 01 09 30 09 31 09 38 15 81 25 7F 75 08 95 03 81 06 C0 C0
+
+Usage Page (Generic Desktop Control)	                05 01 
+Usage (Mouse)					        09 02 
+Collection (Application)				A1 01 
+  Usage (Pointer)					09 01 
+  Collection (Physical)				        A1 00 
+    Usage Page (Button)				        05 09 
+    Usage Minimum (1)				        19 01 
+    Usage Maximum (3)				        29 03 
+    Logical Minimum (0)				        15 00 
+    Logical Maximum (1)				        25 01 
+    Report Size (1)					75 01 
+    Report Count (3)					95 03 
+    Input (Data, Variable, Absolute)                    81 02 
+    Report Size (5)					75 05 
+    Report Count (1)					95 01 
+    Input (Constant)					81 01 
+    Usage Page (Generic Desktop Control)                05 01 
+    Usage (X)					        09 30 
+    Usage (Y)					        09 31 
+    Usage (Wheel)					09 38 
+    Logical Minimum (-127)				15 81 
+    Logical Maximum (127)				25 7F 
+    Report Size (8)					75 08 
+    Report Count (3)					95 03 
+ 
+
+ 
+
+ 
+
+81属于Main类的Input项，带一个参数。参数06表示Variable, Relative是一个相对的变量。
+
+
+
+05 01 09 02 A1 01 09 01 A1 00 05 09 19 01 29 03 15 00 25 01 75 01 95 03 81 02 75 05 95 01 81 01 
+
+05 01 09 30 09 31 09 38 15 81 25 7F 75 08 95 03 81 06 C0 C0
+
+Usage Page (Generic Desktop Control)	                05 01 
+Usage (Mouse)					        09 02 
+Collection (Application)				A1 01 
+  Usage (Pointer)					09 01 
+  Collection (Physical)				        A1 00 
+    Usage Page (Button)				        05 09 
+    Usage Minimum (1)				        19 01 
+    Usage Maximum (3)				        29 03 
+    Logical Minimum (0)				        15 00 
+    Logical Maximum (1)				        25 01 
+    Report Size (1)					75 01 
+    Report Count (3)					95 03 
+    Input (Data, Variable, Absolute)                    81 02 
+    Report Size (5)					75 05 
+    Report Count (1)					95 01 
+    Input (Constant)					81 01 
+    Usage Page (Generic Desktop Control)                05 01 
+    Usage (X)					        09 30 
+    Usage (Y)					        09 31 
+    Usage (Wheel)					09 38 
+    Logical Minimum (-127)				15 81 
+    Logical Maximum (127)				25 7F 
+    Report Size (8)					75 08 
+    Report Count (3)					95 03 
+    Input (Data, Variable, Relative)	                81 06 
+ 
+
+C0属于Main类End Collection项，无参数。表示关闭前面开的集合。
+
+05 01 09 02 A1 01 09 01 A1 00 05 09 19 01 29 03 15 00 25 01 75 01 95 03 81 02 75 05 95 01 81 01 
+
+05 01 09 30 09 31 09 38 15 81 25 7F 75 08 95 03 81 06 C0 C0
+
+ 
+
+另一个C0也是相同的功能，这里就不再重复了。
+
+Data stage (52 bytes) :
+------------------------------------
+HID Class Report Descriptor :
+ 
+Item						            Value(Hex)
+-------------------------------------------------------------------------------
+Usage Page (Generic Desktop Control)	                05 01 
+Usage (Mouse)					        09 02 
+Collection (Application)				A1 01 
+  Usage (Pointer)					09 01 
+  Collection (Physical)				        A1 00 
+    Usage Page (Button)				        05 09 
+    Usage Minimum (1)				        19 01 
+    Usage Maximum (3)				        29 03 
+    Logical Minimum (0)				        15 00 
+    Logical Maximum (1)				        25 01 
+    Report Size (1)					75 01 
+    Report Count (3)					95 03 
+    Input (Data, Variable, Absolute)                    81 02 
+    Report Size (5)					75 05 
+    Report Count (1)					95 01 
+    Input (Constant)					81 01 
+    Usage Page (Generic Desktop Control)                05 01 
+    Usage (X)					        09 30 
+    Usage (Y)					        09 31 
+    Usage (Wheel)					09 38 
+    Logical Minimum (-127)				15 81 
+    Logical Maximum (127)				25 7F 
+    Report Size (8)					75 08 
+    Report Count (3)					95 03 
+    Input (Data, Variable, Relative)	                81 06 
+  End Collection					C0 
+End Collection					        C0 
+ 
+
+从上面可以看出，报表的整体信息。有四点。
+
+鼠标有三个按键（左、滑轮、右），每个按键占一个位，用0和1分表表示松开和按下，总共占3bit。
+有5个固定位，用于填充前面三个bit组成一个字节。
+有三个8bit的有符号数据，分别表示，鼠标X方向移动，Y方向移动和滚轮滑动，这三个都是相对前面移动的变量。
+3 * 1bit + 1 * 5bit + 3 * 8 bit = 32bit = 4byte
+ 
+
+ 
+
+从报表中总结如下：
+
+1.Input表示的是它上面最近的一组Usage Page。（当然Output、Feature同理）
+
+2.固定填充不需要重新开Usage Page
+
+3.按键到相对坐标之类需要重新开Usage Page表明不是按键了，而是新的功能了。
+
+ 
+
+ 
+
+
+
+最后看一下，鼠标中断传输时的数据。和上面的报表描述符的描述完全一致。
+
+bit0有过一次从1 ~ 0的变化，表明某一个按键有过动作。
